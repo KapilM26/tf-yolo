@@ -382,7 +382,7 @@ def customized_yolo_loss(y_true, y_pred, input_shape, candidate_anchors, grid_sh
     # Darknet raw box to calculate loss.
     # print(y_true[..., :2].shape, grid_shape[::-1], grid.shape)
     raw_true_xy = y_true[..., :2]*grid_shape[::-1] - grid
-    raw_true_wh = K.log(y_true[..., 2:4] / candidate_anchors * input_shape[::-1])
+    raw_true_wh = K.log(y_true[..., 2:4] / candidate_anchors * input_shape[::-1]+1e-10)
     raw_true_wh = K.switch(object_mask, raw_true_wh, K.zeros_like(raw_true_wh)) # avoid log(0)=-inf
     box_loss_scale = 2 - y_true[...,2:3]*y_true[...,3:4]
 
